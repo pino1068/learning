@@ -2,20 +2,6 @@ package learning
 
 class SeminarDetails {
 	Seminar seminar
-
-	String getDescription(){
-		def enrollments = seminar.studentList.join(" - ")
-"""		----- Seminar: $seminar.name -----
-		********
-		course: $seminar.description 
-		********
-		where: $seminar.location  
-		seats left: $seminar.seatsLeft
-		----------
-		Enrolled students:
-		$enrollments
-"""
-	}
 	
 	static void main(String[] args) {
 		Seminar seminar = new Seminar(
@@ -38,5 +24,19 @@ class SeminarDetails {
 
 	private static Student stefano() {
 		new Student(name:"Stefano",lastname:"Coluccia")
+	}
+
+	String getDescription(){
+		def enrollments = seminar.studentList.join(" - ")
+"""		----- Seminar: $seminar.name -----
+		********
+		course: $seminar.description 
+		********
+		where: $seminar.location  
+		seats left: $seminar.seatsLeft
+		----------
+		Enrolled students:
+		$enrollments
+"""
 	}
 }
