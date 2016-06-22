@@ -15,13 +15,12 @@ class SeminarUI {
 
 	String printSeminar(seminar) {
 		def students = seminar.studentList.join("\n\t\t")
-		def result = """
+		"""
 	------------ $seminar.name ------------
 	$seminar.description in $seminar.location
 	seats left: $seminar.seatsLeft
 	Students:
 		$students"""
-		return result
 	}
 	
 	def leftShift(seminar){
