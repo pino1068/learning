@@ -1,4 +1,4 @@
-package learning
+package seminar
 
 class Enrollment {
 	Student student
