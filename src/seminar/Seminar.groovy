@@ -25,4 +25,8 @@ class Seminar {
 	def getStudentList(){
 		enrollments*.info
 	}
+	
+	def printOn(printer){
+		printer.printSeminar(this)
+	}
 }

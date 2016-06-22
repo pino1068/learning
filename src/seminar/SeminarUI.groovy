@@ -1,25 +1,31 @@
 package seminar
 
 class SeminarUI {
-	Seminar seminar
+	def seminars = []
 	
-	@Override
-	public String toString() {
-		if(seminar)
-			return printSeminar()
-		"no seminar";
+	public String getText() {
+		if(seminars.empty)
+			return "no seminar";
+		printSeminars()
 	}
 
-	private def printSeminar() {
+	private def printSeminars() {
+		seminars*.printOn(this).join("\n")
+	}
+
+	String printSeminar(seminar) {
 		def students = seminar.studentList.join("\n\t\t")
-		"""
+		def result = """
 	------------ $seminar.name ------------
 	$seminar.description in $seminar.location
 	seats left: $seminar.seatsLeft
 	Students:
-		$students
-"""
+		$students"""
+		return result
 	}
 	
+	def leftShift(seminar){
+		seminars << seminar
+	}	
 
 }

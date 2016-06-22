@@ -1,19 +1,26 @@
 package seminar;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.*
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.Before
+import org.junit.Ignore
+import org.junit.Test
 
 class SeminarTest {
+	def ui
+	
+	@Before
+	void setup(){
+		ui = new SeminarUI()
+	}
 
 	@Test
 	void noSeminar() {
-		assertEquals("no seminar", new SeminarUI().toString())
+		assertEquals("no seminar", new SeminarUI().text)
 	}
 	
 	@Test
-	void viewSeminar() {
+	void seminarText() {
 		def seminar = new Seminar(
 			location:"Lugano",
 			course:new Course(name:"math", number:3, description:"Mathematics"), 
@@ -21,6 +28,28 @@ class SeminarTest {
 		seminar.enroll(new Student(name:"Alessandro", surname:"Misenta"))
 		seminar.enroll(new Student(name:"Giuseppe", surname:"Di Pierri"))
 		
+		ui << seminar
+		assertEquals(
+"""
+	------------ math (3) ------------
+	Mathematics in Lugano
+	seats left: 8
+	Students:
+		Alessandro Misenta
+		Giuseppe Di Pierri""", ui.text)
+	}
+	
+	@Test
+	void moreSeminarsText() {
+		def seminar = new Seminar(
+				location:"Lugano",
+				course:new Course(name:"math", number:3, description:"Mathematics"), 
+				seats:10)
+		seminar.enroll(new Student(name:"Alessandro", surname:"Misenta"))
+		seminar.enroll(new Student(name:"Giuseppe", surname:"Di Pierri"))
+		
+		ui << seminar
+		ui << seminar
 		assertEquals(
 """
 	------------ math (3) ------------
@@ -29,10 +58,12 @@ class SeminarTest {
 	Students:
 		Alessandro Misenta
 		Giuseppe Di Pierri
-""", view(seminar))
-	}
 
-	private String view(Seminar seminar) {
-		new SeminarUI(seminar:seminar).toString()
+	------------ math (3) ------------
+	Mathematics in Lugano
+	seats left: 8
+	Students:
+		Alessandro Misenta
+		Giuseppe Di Pierri""", ui.text)
 	}
 }
