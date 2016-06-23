@@ -2,8 +2,7 @@ package seminar
 
 class Seminar {
 	Course course
-	int seats = 0
-	String location
+	Location where
 	def enrollments = []
 	
 	def getName(){
@@ -11,7 +10,7 @@ class Seminar {
 	}
 	
 	def getSeatsLeft(){
-		seats - enrollments.size()	
+		where.seats - enrollments.size()	
 	}
 	
 	def getDescription(){

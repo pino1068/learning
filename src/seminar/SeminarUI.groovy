@@ -6,10 +6,6 @@ class SeminarUI {
 	public String getText() {
 		if(seminars.empty)
 			return "no seminar";
-		printSeminars()
-	}
-
-	private def printSeminars() {
 		seminars*.printOn(this).join("\n")
 	}
 

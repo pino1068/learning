@@ -22,13 +22,14 @@ class SeminarTest {
 	@Test
 	void seminarText() {
 		def seminar = new Seminar(
-			location:"Lugano",
+			where: new Location(name:"Lugano",seats:10),
 			course:new Course(name:"math", number:3, description:"Mathematics"), 
-			seats:10)
+			)
 		seminar.enroll(new Student(name:"Alessandro", surname:"Misenta"))
 		seminar.enroll(new Student(name:"Giuseppe", surname:"Di Pierri"))
 		
 		ui << seminar
+		
 		assertEquals(
 """
 	------------ math (3) ------------
@@ -42,14 +43,15 @@ class SeminarTest {
 	@Test
 	void moreSeminarsText() {
 		def seminar = new Seminar(
-				location:"Lugano",
-				course:new Course(name:"math", number:3, description:"Mathematics"), 
-				seats:10)
+			where: new Location(name:"Lugano",seats:10),
+			course:new Course(name:"math", number:3, description:"Mathematics"), 
+				)
 		seminar.enroll(new Student(name:"Alessandro", surname:"Misenta"))
 		seminar.enroll(new Student(name:"Giuseppe", surname:"Di Pierri"))
 		
 		ui << seminar
 		ui << seminar
+		
 		assertEquals(
 """
 	------------ math (3) ------------
