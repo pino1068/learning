@@ -29,44 +29,11 @@ class SimpleGroovyServlet extends HttpServlet {
 		def template = engine.createTemplate(f).make(binding)
 		response.writer.println template.toString()
 	}
-
-//	private page(MarkupBuilder xml) {
-//		xml.html {
-//				head {
-//					title "ciao"
-//				}
-//				body2 {
-//					h1 "My First Heading"
-//					form (action:"http://localhost:8080/",method:"POST"){
-//						input (type:"submit",value:"Save",name:"save")
-//						input (type:"submit",value:"Submit for Approval", name:"approve")
-//					}
-//	
-//				}
-//		}
-//	}
 	static void main(String[] args) {
-		SimpleGroovyServlet.run(8080, null) /* { ->
-			response.contentType = 'text/plain'
-println """
-<!DOCTYPE html>
-<html>
-<body>
-
-<h1>My First Heading</h1>
-
-<p>My first paragraph.</p>
-
-
-<form action="http://localhost:8080/" method="POST" />
-  <input type="submit" value="Save" name="save" />
-  <input type="submit" value="Submit for Approval" name="approve" />
-</form>
-
-</body>
-</html>
-"""
-		}*/
+        def jetty = new Server(8080)
+        def context = new Context(jetty, '/', Context.SESSIONS)
+        context.addServlet SimpleGroovyServlet, '/*'
+        jetty.start()
 	}
 
 	void doPost(HttpServletRequest request, HttpServletResponse response) {
@@ -75,11 +42,20 @@ println """
 		page(request, response)
 //		page(new MarkupBuilder(response.writer))
 	}
+
+	private page(MarkupBuilder xml) {
+		xml.html {
+				head {
+					title "ciao"
+				}
+				body2 {
+					h1 "My First Heading"
+					form (action:"http://localhost:8080/",method:"POST"){
+						input (type:"submit",value:"Save",name:"save")
+						input (type:"submit",value:"Submit for Approval", name:"approve")
+					}
 	
-    static void run(int port, Closure requestHandler) {
-        def jetty = new Server(port)
-        def context = new Context(jetty, '/', Context.SESSIONS)
-        context.addServlet SimpleGroovyServlet, '/*'
-        jetty.start()
-    }
+				}
+		}
+	}
 }
