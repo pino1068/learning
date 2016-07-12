@@ -10,39 +10,15 @@ class Customer {
 		_name = name;
 	}
 	
-	public static void main(String [] args)
-	{
-		Customer customer = new Customer("pino");
-		System.out.println(customer.statement());
-	}
-	
 	public String statement() {
 		double totalAmount = 0;
 		int frequentRenterPoints = 0;
 		Enumeration rentals = _rentals.elements();
 		String result = "Rental Record for " + _name + "\n";
 		while (rentals.hasMoreElements()) {
-			double thisAmount = 0;
 			Rental each = (Rental) rentals.nextElement();
 
-			// determine amounts for each line
-			switch (each.getMovie().priceCode()) {
-			case Movie.REGULAR:
-				thisAmount += 2;
-				if (each.daysRented() > 2)
-					thisAmount += (each.daysRented() - 2) * 1.5;
-				break;
-			case Movie.NEW_RELEASE:
-				thisAmount += each.daysRented() * 3;
-				break;
-			case Movie.CHILDRENS:
-				thisAmount += 1.5;
-				if (each.daysRented() > 3)
-					thisAmount += (each.daysRented() - 3) * 1.5;
-				break;
-
-			}
-			totalAmount += thisAmount;
+			totalAmount += amountFor(each);
 
 			// add frequent renter points
 			frequentRenterPoints++;
@@ -53,7 +29,7 @@ class Customer {
 
 			// show figures for this rental
 			result += "\t" + each.getMovie().name() + "\t"
-					+ String.valueOf(thisAmount) + "\n";
+					+ String.valueOf(amountFor(each)) + "\n";
 
 		}
 		// add footer lines
@@ -62,6 +38,27 @@ class Customer {
 				+ " frequent renter points";
 		return result;
 
+	}
+
+	private double amountFor(Rental rental) {
+		double result = 0;
+		switch (rental.getMovie().priceCode()) {
+		case Movie.REGULAR:
+			result += 2;
+			if (rental.daysRented() > 2)
+				result += (rental.daysRented() - 2) * 1.5;
+			break;
+		case Movie.NEW_RELEASE:
+			result += rental.daysRented() * 3;
+			break;
+		case Movie.CHILDRENS:
+			result += 1.5;
+			if (rental.daysRented() > 3)
+				result += (rental.daysRented() - 3) * 1.5;
+			break;
+
+		}
+		return result;
 	}
 
 	public void addRental(Rental arg) {
