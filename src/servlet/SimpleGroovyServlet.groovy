@@ -24,7 +24,9 @@ class SimpleGroovyServlet extends HttpServlet {
 	}
 
 	def page(request, response) {
-		def f = new File(request.parameterMap.page[0]?:'page.html')
+		println request?.parameterMap
+		def page = request?.parameterMap.page
+		def f = new File(page?page[0]:'page.html')
 		def engine = new groovy.text.GStringTemplateEngine()
 		Map binding = [request:request, session:request.session ]
 		def template = engine.createTemplate(f).make(binding)
@@ -32,7 +34,7 @@ class SimpleGroovyServlet extends HttpServlet {
 	}
 	
 	static void main(String[] args) {
-        def jetty = new Server(8080)
+        def jetty = new Server(8888)
         def context = new Context(jetty, '/', Context.SESSIONS)
         context.addServlet SimpleGroovyServlet, '/*'
         jetty.start()
@@ -52,7 +54,7 @@ class SimpleGroovyServlet extends HttpServlet {
 				}
 				body2 {
 					h1 "My First Heading"
-					form (action:"http://localhost:8080/",method:"POST"){
+					form (action:"http://localhost:8888/",method:"POST"){
 						input (type:"submit",value:"Save",name:"save")
 						input (type:"submit",value:"Submit for Approval", name:"approve")
 					}
