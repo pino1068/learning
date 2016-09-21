@@ -5,6 +5,7 @@ import java.util.Vector;
 
 class Customer {
 	private String _name;
+	private Vector _rentals = new Vector();
 
 	public Customer(String name) {
 		_name = name;
@@ -52,15 +53,4 @@ class Customer {
 	public void addRental(Rental arg) {
 		_rentals.addElement(arg);
 	}
-
-	//
-	// public static Customer get(String name) {
-	// return (Customer) Registrar.get("Customers", name);
-	// }
-	//
-	// public void persist() {
-	// Registrar.add("Customers", this);
-	// }
-
-	private Vector _rentals = new Vector();
 }

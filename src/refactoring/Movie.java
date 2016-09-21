@@ -5,7 +5,6 @@ public class Movie {
     public static final int  REGULAR = 0;
     public static final int  NEW_RELEASE = 1;
 
-
     private String _name;
 	private int _priceCode;
 
@@ -17,14 +16,6 @@ public class Movie {
 	public int priceCode() {
 		return _priceCode;
 	}
-//
-//	public void persist() {
-//		Registrar.add ("Movies", this);
-//	}
-//
-//	public static Movie get(String name) {
-//		return (Movie) Registrar.get ("Movies", name);
-//	}
 
 	public String name() {
 		return _name;
