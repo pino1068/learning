@@ -42,12 +42,7 @@ class SeminarTest {
 	
 	@Test
 	void moreSeminarsText() {
-		def seminar = new Seminar(
-			where: new Location(name:"Lugano",seats:10),
-			course:new Course(name:"math", number:3, description:"Mathematics"), 
-				)
-		seminar.enroll(new Student(name:"Alessandro", surname:"Misenta"))
-		seminar.enroll(new Student(name:"Giuseppe", surname:"Di Pierri"))
+		def seminar = createSeminar()
 		
 		ui << seminar
 		ui << seminar
@@ -67,5 +62,52 @@ class SeminarTest {
 	Students:
 		Alessandro Misenta
 		Giuseppe Di Pierri""", ui.text)
+	}
+
+	private Seminar createSeminar() {
+		def seminar = new Seminar(
+				where: new Location(name:"Lugano",seats:10),
+				course:new Course(name:"math", number:3, description:"Mathematics"),
+				)
+		seminar.enroll(new Student(name:"Alessandro", surname:"Misenta"))
+		seminar.enroll(new Student(name:"Giuseppe", surname:"Di Pierri"))
+		return seminar
+	}
+	
+	@Test 
+	void htmlVersion(){
+		def seminar = createSeminar()
+		
+		ui << seminar
+		ui << seminar
+		
+		assertEquals(
+"""<html>
+  <head>
+    <title>Your Title Here</title>
+  </head>
+  <body BGCOLOR='FFFFFF'>
+    <h1>Seminars</h1>
+    <h2>math (3) in Lugano</h2>
+    <p>8 seats left</p>
+    <p>
+      <b>Students are:</b>
+    </p>
+    <ul>
+      <li>Alessandro Misenta</li>
+      <li>Giuseppe Di Pierri</li>
+    </ul>
+    <h2>math (3) in Lugano</h2>
+    <p>8 seats left</p>
+    <p>
+      <b>Students are:</b>
+    </p>
+    <ul>
+      <li>Alessandro Misenta</li>
+      <li>Giuseppe Di Pierri</li>
+    </ul>
+  </body>
+</html>""", ui.html)
+	
 	}
 }

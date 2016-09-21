@@ -1,22 +1,17 @@
 package seminar
 
+import seminar.ui.HtmlSeminarUI
+import seminar.ui.TextSeminarUI
+
 class SeminarUI {
 	def seminars = []
 	
 	public String getText() {
-		if(seminars.empty)
-			return "no seminar";
-		seminars*.printOn(this).join("\n")
+		new TextSeminarUI(seminars: seminars).toString()
 	}
-
-	String printSeminar(seminar) {
-		def students = seminar.studentList.join("\n\t\t")
-		"""
-	------------ $seminar.name ------------
-	$seminar.description in $seminar.where
-	seats left: $seminar.seatsLeft
-	Students:
-		$students"""
+	
+	public String getHtml() {
+		new HtmlSeminarUI(seminars: seminars).toString()
 	}
 	
 	def leftShift(seminar){

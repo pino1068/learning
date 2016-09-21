@@ -1,11 +1,19 @@
 package servlet
 
-import org.mortbay.jetty.servlet.*
-import org.mortbay.jetty.Server
 import groovy.servlet.*
 import groovy.xml.MarkupBuilder
-import javax.servlet.http.*
+
 import javax.servlet.ServletConfig
+import javax.servlet.http.*
+
+import org.mortbay.jetty.Server
+import org.mortbay.jetty.servlet.*
+
+import seminar.Course
+import seminar.Location
+import seminar.Seminar
+import seminar.SeminarUI
+import seminar.Student
 
 @Grab(group='org.mortbay.jetty', module='jetty-embedded', version='6.1.14')
 class SimpleGroovyServlet extends HttpServlet {
@@ -24,13 +32,34 @@ class SimpleGroovyServlet extends HttpServlet {
 	}
 
 	def page(request, response) {
-		println request?.parameterMap
-		def page = request?.parameterMap.page
-		def f = new File(page?page[0]:'page.html')
-		def engine = new groovy.text.GStringTemplateEngine()
-		Map binding = [request:request, session:request.session ]
-		def template = engine.createTemplate(f).make(binding)
-		response.writer.println template.toString()
+		if(request.requestURL.contains("seminar.txt")){
+			def seminar = createSeminar()
+			def ui = new SeminarUI()
+			ui << seminar
+			ui << seminar
+			response.writer.println ui.text
+		}
+		else if(request.requestURL.contains("seminar.html")){
+			def seminar = createSeminar()
+					def ui = new SeminarUI()
+			ui << seminar
+			ui << seminar
+			response.writer.println ui.html
+		}
+		else if(request.requestURL.contains("generated")){
+			def writer = new StringWriter()
+			def html = new MarkupBuilder(writer)
+			page2(html)
+			response.writer.println writer.toString()
+		}
+		else{
+			def page = request?.parameterMap.page
+			def f = new File(page?page[0]:'page.html')
+			def engine = new groovy.text.GStringTemplateEngine()
+			Map binding = [request:request, session:request.session ]
+			def template = engine.createTemplate(f).make(binding)
+			response.writer.println template.toString()
+		}
 	}
 	
 	static void main(String[] args) {
@@ -47,7 +76,7 @@ class SimpleGroovyServlet extends HttpServlet {
 //		page(new MarkupBuilder(response.writer))
 	}
 
-	private page2(MarkupBuilder xml) {
+	private def page2(MarkupBuilder xml) {
 		xml.html {
 				head {
 					title "ciao"
@@ -62,4 +91,16 @@ class SimpleGroovyServlet extends HttpServlet {
 				}
 		}
 	}
+	
+	
+	private Seminar createSeminar() {
+		def seminar = new Seminar(
+				where: new Location(name:"Lugano",seats:10),
+				course:new Course(name:"math", number:3, description:"Mathematics"),
+				)
+		seminar.enroll(new Student(name:"Alessandro", surname:"Misenta"))
+		seminar.enroll(new Student(name:"Giuseppe", surname:"Di Pierri"))
+		return seminar
+	}
+
 }
