@@ -1,10 +1,10 @@
 package refactoring;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.*
 
-import org.junit.Test;
+import org.junit.Test
 
-public class RentalTest {
+public class RentalsTest {
 
 	@Test
 	public void empty() {
