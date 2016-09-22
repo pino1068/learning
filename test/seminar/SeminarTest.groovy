@@ -7,7 +7,7 @@ import org.junit.Ignore
 import org.junit.Test
 
 class SeminarTest {
-	def ui
+	def ui, day
 	
 	@Before
 	void setup(){
@@ -22,6 +22,7 @@ class SeminarTest {
 	@Test
 	void seminarText() {
 		def seminar = new Seminar(
+			when: day(),
 			where: new Location(name:"Lugano",seats:10),
 			course:new Course(name:"math", number:3, description:"Mathematics"), 
 			)
@@ -35,9 +36,24 @@ class SeminarTest {
 	------------ math (3) ------------
 	Mathematics in Lugano
 	seats left: 8
+	starting date:  01.02.2016
 	Students:
 		Alessandro Misenta
 		Giuseppe Di Pierri""", ui.text)
+	}
+
+	private Date day() {
+		if(day)
+			return day
+		day = calculateDay()
+	}
+
+	private Date calculateDay() {
+		Calendar c = Calendar.getInstance()
+		c.set(Calendar.DAY_OF_MONTH, 1)
+		c.set(Calendar.MONTH, 1)
+		c.set(Calendar.YEAR, 2016)
+		c.getTime()
 	}
 	
 	@Test
@@ -52,6 +68,7 @@ class SeminarTest {
 	------------ math (3) ------------
 	Mathematics in Lugano
 	seats left: 8
+	starting date:  01.02.2016
 	Students:
 		Alessandro Misenta
 		Giuseppe Di Pierri
@@ -59,6 +76,7 @@ class SeminarTest {
 	------------ math (3) ------------
 	Mathematics in Lugano
 	seats left: 8
+	starting date:  01.02.2016
 	Students:
 		Alessandro Misenta
 		Giuseppe Di Pierri""", ui.text)
@@ -66,6 +84,7 @@ class SeminarTest {
 
 	private Seminar createSeminar() {
 		def seminar = new Seminar(
+				when: day(),
 				where: new Location(name:"Lugano",seats:10),
 				course:new Course(name:"math", number:3, description:"Mathematics"),
 				)
@@ -90,6 +109,7 @@ class SeminarTest {
     <h1>Seminars</h1>
     <h2>math (3) in Lugano</h2>
     <p>8 seats left</p>
+    <p>Starting date: 01.02.2016</p>
     <p>
       <b>Students are:</b>
     </p>
@@ -99,6 +119,7 @@ class SeminarTest {
     </ul>
     <h2>math (3) in Lugano</h2>
     <p>8 seats left</p>
+    <p>Starting date: 01.02.2016</p>
     <p>
       <b>Students are:</b>
     </p>

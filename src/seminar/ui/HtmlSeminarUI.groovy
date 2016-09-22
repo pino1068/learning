@@ -23,6 +23,7 @@ class HtmlSeminarUI {
 					seminars.each{ Seminar seminar ->
 						h2 "$seminar.name in $seminar.where"
 						p "$seminar.seatsLeft seats left"
+						p "Starting date: $seminar.day"
 						p{ b "Students are:"}
 						ul{
 							seminar.studentList.each{

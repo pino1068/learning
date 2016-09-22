@@ -3,10 +3,16 @@ package seminar
 class Seminar {
 	Course course
 	Location where
+	Date when = new Date()
+	
 	def enrollments = []
 	
 	def getName(){
 		"$course.name ($course.number)"
+	}
+	
+	def getDay(){
+		when.format("dd.MM.yyyy")
 	}
 	
 	def getSeatsLeft(){

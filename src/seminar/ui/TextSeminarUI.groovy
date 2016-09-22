@@ -17,6 +17,7 @@ class TextSeminarUI {
 	------------ $seminar.name ------------
 	$seminar.description in $seminar.where
 	seats left: $seminar.seatsLeft
+	starting date:  $seminar.day
 	Students:
 		$students"""
 	}
