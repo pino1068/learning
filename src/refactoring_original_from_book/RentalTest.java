@@ -20,8 +20,8 @@ _("Rental Record for pluto")
 	@Test
 	public void rent_some_movies_for_a_few_days() {
 		Customer c = new Customer("pluto");
-		c.addRental(new Rental(new Tape("",new Movie("KPax", Movie.REGULAR)), 10));
-		c.addRental(new Rental(new Tape("",new Movie("L.A. Confidential", Movie.REGULAR)), 15));
+		c.addRental(new Rental(new Movie("KPax", Movie.REGULAR), 10));
+		c.addRental(new Rental(new Movie("L.A. Confidential", Movie.REGULAR), 15));
 		
 		assertEquals(
 _("Rental Record for pluto")

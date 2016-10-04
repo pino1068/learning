@@ -2,8 +2,8 @@ package refactoring_original_from_book;
 
 class Rental {
 
-	public Rental(Tape tape, int daysRented) {
-		_tape = tape;
+	public Rental(Movie movie, int daysRented) {
+		_movie = movie;
 		_daysRented = daysRented;
 	}
 	
@@ -11,11 +11,11 @@ class Rental {
 		return _daysRented;
 	}
 
-	public Tape getTape() {
-		return _tape;
+	public Movie getMovie() {
+		return _movie;
 	}
 
-	private Tape _tape;
+	private Movie _movie;
 
 	private int _daysRented;
 }
