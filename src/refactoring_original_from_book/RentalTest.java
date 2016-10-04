@@ -1,7 +1,7 @@
 package refactoring_original_from_book;
 
 import static org.junit.Assert.assertEquals;
-import static refactoring.Lines._;
+import static refactoring_original_from_book.Lines._;
 
 import org.junit.Test;
 
