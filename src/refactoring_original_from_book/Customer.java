@@ -72,14 +72,5 @@ class Customer {
 		return _name;
 	}
 
-	//
-	// public static Customer get(String getName) {
-	// return (Customer) Registrar.get("Customers", getName);
-	// }
-	//
-	// public void persist() {
-	// Registrar.add("Customers", this);
-	// }
-
 	private Vector _rentals = new Vector();
 }
