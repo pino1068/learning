@@ -76,22 +76,4 @@ class Chooser {
 			new File(dir, System.currentTimeMillis()+"_gm.txt") << repository.text
 		}
 	}
-	
-	static store(guys, repository){
-		backup(repository)
-		repository.delete()
-		repository << guys.unique().join("\n")
-		dump(guys)
-	}
-
-	static dump(guys){
-		println "=========================> Poeple are:"
-		println guys.join("\n")
-	}
-
-	static backup(repository){
-		def dir = new File("backup")
-		if(!dir.exists()) dir.mkdirs()
-		new File(dir, System.currentTimeMillis()+"_gm.txt") << repository.text
-	}
 }
