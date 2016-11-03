@@ -2,6 +2,7 @@ Alessandro Misenta
 Dario Zivko
 Enrico Mangano
 Enrico Mazzi
+Franco Sellitto
 Gabriele Izzo
 Gennaro Errico
 Giuseppe Di Pierri
@@ -12,4 +13,3 @@ Matteo Besutti
 Mattia Cattaneo
 Stefano Coluccia
 Valentino Decarli
-pino

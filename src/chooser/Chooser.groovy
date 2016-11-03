@@ -8,27 +8,25 @@ class Chooser {
 	static def PEOPLE = "gm_people.txt"
 
 	static void main(String[] args){
-		def repository = new File(PEOPLE)
-		if(!repository.exists()) repository.write ""
-		def guys = repository.readLines().sort()
-		def command = args?args[0]:"who"
+		def repo = new Repo()
+		if(!repo.repository.exists()) repo.repository.write ""
+		def command = args?args[0].trim():"who"
 		switch(command){
 			case "who":
-				if(guys.empty){ println "...none...";break}
-				def random = new Random().nextInt(guys.size())
-				println guys[random]
+				if(repo.empty){ println "...none...";break}
+				def random = new Random().nextInt(repo.guys.size())
+				println repo.guys[random]
 				break
 			case "+":
 			case "-add":
 			case "add":
-				guys << args[1]
+				repo << args[1]
 				println "=======> added: "+args[1]
-				store(guys, repository)
 				break
 			case "list":
 			case "-":
 			case "all":
-				dump(repository)
+				repo.dump()
 				break
 			case "-":
 			case "-del":
@@ -36,12 +34,46 @@ class Chooser {
 			case "-delete":
 			case "-remove":
 			case "remove":
-				guys.remove args[1]
+				repo >> args[1]
 				println "=======> removed: "+args[1]
-				store(guys, repository)
 				break
 			default:
 				println "sorry?"
+		}
+	}
+	
+	static class Repo{
+		def repository = new File(PEOPLE)
+		def guys = repository.readLines().sort{it}
+		
+		boolean isEmpty(){guys.empty}
+		
+		void leftShift(guy){
+			guys << guy
+			store()
+		}
+		
+		void rightShift(guy){
+			guys.remove guy
+			store()
+		}
+	
+		def store(){
+			backup()
+			repository.delete()
+			repository << guys.unique().join("\n")
+			dump()
+		}
+	
+		def dump(){
+			println "=========================> Poeple are:"
+			println guys.join("\n")
+		}
+	
+		def backup(){
+			def dir = new File("backup")
+			if(!dir.exists()) dir.mkdirs()
+			new File(dir, System.currentTimeMillis()+"_gm.txt") << repository.text
 		}
 	}
 	
@@ -49,12 +81,12 @@ class Chooser {
 		backup(repository)
 		repository.delete()
 		repository << guys.unique().join("\n")
-		dump(repository)
+		dump(guys)
 	}
 
-	static dump(repository){
-		println "=======> Poeple are:"
-		println repository.text
+	static dump(guys){
+		println "=========================> Poeple are:"
+		println guys.join("\n")
 	}
 
 	static backup(repository){
