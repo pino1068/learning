@@ -21,7 +21,10 @@ class CompareCsv {
 //		checkFiles(new File('/home/dev/pino/reports/new/03.06.2016.csv'), new File('/home/dev/pino/reports/testing/03.06.2016.csv'))
 //		checkFiles(new File('/home/dev/pino/reports/new/16.08.2016.csv'), new File('/home/dev/pino/reports/testing/16.08.2016.csv'))
 //		checkFiles(new File('/home/dev/pino/reports/new/07.06.2016.csv'), new File('/home/dev/pino/reports/testing/07.06.2016.csv'))
-		checkDirs(new File("/home/dev/pino/reports/testing"), "/home/dev/pino/reports/new")
+//		checkFiles(new File('/home/dev/pino/reports/new/05.07.2016.csv'), new File('/home/dev/pino/reports/testing/05.07.2016.csv'))
+//		checkFiles(new File('/home/dev/pino/reports/new/11.07.2016.csv'), new File('/home/dev/pino/reports/testing/11.07.2016.csv'))
+		checkFiles(new File('/home/dev/pino/reports/new/14.12.2015.csv'), new File('/home/dev/pino/reports/testing/14.12.2015.csv'))
+//		checkDirs(new File("/home/dev/pino/reports/testing"), "/home/dev/pino/reports/new")
 	}
 
 	def static report = new Report()
@@ -86,35 +89,39 @@ class CompareCsv {
 		def kilobytes = oldFile.length()/1000
 		report.info "************************* checking file: "+oldPath.split("/").last()+" ($kilobytes KB)"
 		check(oldList, newList, oldPath, newPath)
-//		report.debug ("**inverting**")
 		check(newList, oldList, newPath, oldPath)//inverted
 		def delta = (System.currentTimeMillis()-init)
 		report.debug "done in "+delta+" msec"
 	}
 
 	private static void check(List oldList, List newList, String oldPath, String newPath) {
-		def oldOrderIdLine 	= oldList.groupBy{primaryKey(it)}
-		def oldPersonLine 	= oldList.groupBy{secondaryKey(it)}
+		def oldOrderIdLine 	= oldList.groupBy{orderIdKey(it)}
+		def newOrderIdLine 	= newList.groupBy{orderIdKey(it)}
 		def newDateLine 	= newList.groupBy{thirdKey(it)}
+		def oldPersonLine 	= oldList.groupBy{personKey(it)}
+		def newPersonLine 	= newList.groupBy{personKey(it)}
 		if(newDateLine.keySet().size()>1){
-			report.info "WARNING: file "+oldPath+" contains more dates: "+newDateLine.keySet()
+			report.info "WARNING: file "+newPath+" contains more dates: "+newDateLine.keySet()
 		}
 		for(line in newList) {
 			try {
 				if(line.MERCHANTKEY == 'mobilewalletPaycard')
 					continue;
-				def oldRecords = oldOrderIdLine[primaryKey(line)]
+				def oldRecords = oldOrderIdLine[orderIdKey(line)]
+				def newRecords = newOrderIdLine[orderIdKey(line)]
 				if(!oldRecords){
-					if(newDateLine[thirdKey(line)]?.size() != 1){
+					newDateLine 	= newList.groupBy{line.CHECKDATE}
+					if(newDateLine[line.CHECKDATE]?.size() != 1){
 						report.info "ERROR: This line is available in file: "+newPath +" and not in "+oldPath
 						report.info "==> '$line'"
 					}//else ignore, because in the old line there is a wrong date that we know as wrong already.
-				}else if(oldRecords.size() != 1){
-					def oldPersonRecords = oldPersonLine[secondaryKey(line)]
-					if(oldPersonRecords.size() != 1){
+				}else if(oldRecords.size() != newRecords.size()){
+					def oldPersonRecords = oldPersonLine[personKey(line)]
+					def newPersonRecords = newPersonLine[personKey(line)]
+					if(oldPersonRecords.size() != newPersonRecords.size()){
 						report.info "ERROR: This line is available in file: "+newPath
 						report.info "==> '$line'"
-						report.info "==>  and $oldRecords.size() times in file '$oldPath': "+oldRecords
+						report.info "==>  and $oldPersonRecords.size() times in file '$oldPath': "+oldPersonRecords
 					}else{
 						match2Lines(line, oldPersonRecords.first())
 					}
@@ -127,11 +134,11 @@ class CompareCsv {
 		}
 //		report.debug "done!"
 	}
-	private static primaryKey(it) {
-		it.ORDERID
+	private static orderIdKey(it) {
+		it.ORDERID.trim()
 	}
 
-	private static secondaryKey(it) {
+	private static personKey(it) {
 		""+it.FIRSTNAME+it.LASTNAME+it.BIRTHDATE+it.CHECKDATE
 	}
 	
