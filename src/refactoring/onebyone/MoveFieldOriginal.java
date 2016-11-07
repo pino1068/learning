@@ -8,16 +8,10 @@ import refactoring.onebyone.MoveMethodsFinal.AccountType;
 
 public class MoveFieldOriginal {
 
-	class AccountType {
-	}
-
 	class Account {
-
-		private AccountType _type;
 		private int _interestRate;
 		
-		public Account(AccountType type, int interestRate) {
-			_type = type;
+		public Account(int interestRate) {
 			_interestRate = interestRate;
 		}
 		double interestForAmount_days (double amount, int days) {
@@ -27,6 +21,6 @@ public class MoveFieldOriginal {
 	
 	@Test
 	public void scenario(){
-		assertEquals(5.47, 	new Account(new AccountType(),4).interestForAmount_days(50.0, 10), 0.01);
+		assertEquals(5.47, 	new Account(4).interestForAmount_days(50.0, 10), 0.01);
 	}
 }
